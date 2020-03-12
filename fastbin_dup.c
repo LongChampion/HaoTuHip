@@ -6,12 +6,13 @@ int main()
     fprintf(stderr, "This file demonstrates a simple double-free attack with fastbins.\n");
 
     fprintf(stderr, "Allocating 3 buffers.\n");
-    void *a = malloc(8);
-    void *b = malloc(8);
-    void *c;
+    int *a = malloc(8);
+    int *b = malloc(8);
+    int *c = malloc(8);
 
     fprintf(stderr, "1st malloc(8): %p\n", a);
     fprintf(stderr, "2nd malloc(8): %p\n", b);
+    fprintf(stderr, "3rd malloc(8): %p\n", c);
 
     fprintf(stderr, "Freeing the first one...\n");
     free(a);
@@ -26,10 +27,7 @@ int main()
     free(a);
 
     fprintf(stderr, "Now the free list has [ %p, %p, %p ]. If we malloc 3 times, we'll get %p twice!\n", a, b, a, a);
-    fprintf(stderr, "1st malloc(8): %p\n", a = malloc(8));
-    fprintf(stderr, "2nd malloc(8): %p\n", b = malloc(8));
-    fprintf(stderr, "3rd malloc(8): %p\n", c = malloc(8));
-
-    free(a);
-    free(b);
+    fprintf(stderr, "1st malloc(8): %p\n", malloc(8));
+    fprintf(stderr, "2nd malloc(8): %p\n", malloc(8));
+    fprintf(stderr, "3rd malloc(8): %p\n", malloc(8));
 }

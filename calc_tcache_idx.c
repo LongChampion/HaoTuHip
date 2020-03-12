@@ -3,6 +3,7 @@
 #include <string.h>
 #include <malloc.h>
 
+
 struct malloc_chunk
 {
     size_t mchunk_prev_size; /* Size of previous chunk (if free).  */
@@ -19,7 +20,9 @@ struct malloc_chunk
 /* The corresponding word size.  */
 #define SIZE_SZ (sizeof(size_t))
 
-#define MALLOC_ALIGNMENT (2 * SIZE_SZ < __alignof__(long double) ? __alignof__(long double) : 2 * SIZE_SZ)
+#define MALLOC_ALIGNMENT (2 * SIZE_SZ < __alignof__(long double) \
+                              ? __alignof__(long double)         \
+                              : 2 * SIZE_SZ)
 
 /* The corresponding bit mask value.  */
 #define MALLOC_ALIGN_MASK (MALLOC_ALIGNMENT - 1)
@@ -28,9 +31,11 @@ struct malloc_chunk
 #define MIN_CHUNK_SIZE (offsetof(struct malloc_chunk, fd_nextsize))
 
 /* The smallest size we can malloc is an aligned minimal chunk */
-#define MINSIZE (unsigned long) (((MIN_CHUNK_SIZE + MALLOC_ALIGN_MASK) & ~MALLOC_ALIGN_MASK))
+#define MINSIZE \
+    (unsigned long) (((MIN_CHUNK_SIZE + MALLOC_ALIGN_MASK) & ~MALLOC_ALIGN_MASK))
 
-#define request2size(req) (((req) + SIZE_SZ + MALLOC_ALIGN_MASK < MINSIZE) ? MINSIZE : ((req) + SIZE_SZ + MALLOC_ALIGN_MASK) & ~MALLOC_ALIGN_MASK)
+#define request2size(req) \
+    (((req) + SIZE_SZ + MALLOC_ALIGN_MASK < MINSIZE) ? MINSIZE : ((req) + SIZE_SZ + MALLOC_ALIGN_MASK) & ~MALLOC_ALIGN_MASK)
 
 /* When "x" is from chunksize().  */
 #define csize2tidx(x) (((x) -MINSIZE + MALLOC_ALIGNMENT - 1) / MALLOC_ALIGNMENT)
@@ -57,15 +62,14 @@ int main()
     fprintf(stderr, "\t=> CHUNKSIZE = (x + 0x%lx + 0x%lx) & ~0x%lx\n\n\n", SIZE_SZ, MALLOC_ALIGN_MASK, MALLOC_ALIGN_MASK);
     while (1)
     {
-        fprintf(stderr, "[Enter 0 to exit] Please enter a size x (malloc(x)) in hex (e.g. 0x10): ");
+        fprintf(stderr, "[CTRL-C to exit] Please enter a size x (malloc(x)) in hex (e.g. 0x10): ");
         scanf("%llx", &req);
-        if (req == 0) return 0;
         tidx = usize2tidx(req);
         if (tidx > 63)
+        {
             fprintf(stderr, "\nWARNING: NOT IN TCACHE RANGE!\n");
-        fprintf(stderr, "\nRequest size : 0x%llx (%lld)", req, req);
-        fprintf(stderr, "\nAdjusted size: 0x%llx (%lld)", request2size(req), request2size(req));
-        fprintf(stderr, "\nTCache Idx   : %llu\n", tidx);
+        }
+        fprintf(stderr, "\nTCache Idx: %llu\n", tidx);
     }
     return 0;
 }

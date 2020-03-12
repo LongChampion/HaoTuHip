@@ -10,9 +10,9 @@ int main()
     fprintf(stderr, "This can be exploited in a use-after-free situation.\n");
 
     fprintf(stderr, "Allocating 2 buffers. They can be large, don't have to be fastbin.\n");
-    void *a = malloc(0x512);
-    void *b = malloc(0x256);
-    void *c;
+    char *a = malloc(0x512);
+    char *b = malloc(0x256);
+    char *c;
 
     fprintf(stderr, "1st malloc(0x512): %p\n", a);
     fprintf(stderr, "2nd malloc(0x256): %p\n", b);
@@ -34,7 +34,4 @@ int main()
     fprintf(stderr, "3rd allocation %p points to %s\n", c, c);
     fprintf(stderr, "first allocation %p points to %s\n", a, a);
     fprintf(stderr, "If we reuse the first allocation, it now holds the data from the third allocation.\n");
-
-    free(b);
-    free(c);
 }
