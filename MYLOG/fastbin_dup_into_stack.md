@@ -1,7 +1,7 @@
 # Fastbin duplicate into STACK
 > LongChampion, 12/03/2020
 
-> Please read `fastbin_dup.md` to know how to duplicate the fastbin linked list
+> Please read `fastbin_dup.md` to know how to duplicate the chunk in fastbin linked list.
 
 My code:
 ```
@@ -31,7 +31,7 @@ int main()
     void *STACK = malloc(100);
 }
 ```
-The ideal is simple: we use *double free* to duplicate chunk `a`, then call `malloc` to receive it again. When we modify content of `one`, we also modify the content of `three` (although which haven't allocated yet). The stage of fastbin before *hijacking* is:
+The ideal is simple: we use *double free* to duplicate chunk `a`, then call `malloc` to receive it again. When we modify content of `one`, we also modify content of `three` (although which haven't allocated yet). The stage of fastbin before *hijacking* is:
 > HEAD -> a -> TAIL
 
 After *hijacking*:
@@ -47,9 +47,9 @@ Now `STACK` will point to FAKE.fd (not FAKE) and we can use this pointer to over
 
 # IMPORTANT NOTE
 - Please remember that the `STACK` pointer will point to `FAKE.fd`, not `FAKE`.
-- `one` pointer is set to point to `FAKE` (the begining of `FAKE` chunk), not point to `FAKE.fd`. **The machanism of fd pointer is different in various type of bin**.
+- `one` pointer is set to point to `FAKE` (the begining of `FAKE` chunk), not point to `FAKE.fd`. **The machanism of fd pointer is different in various type of bins**.
     > For example, fd pointer of chunk in `tcache_bin` is point to fd pointer of next chunk instead of chunk's header.
-- The `FAKE.size` must be equal to size of `a` (formally, equal to size of any chunk in same fastbin). Read `calc_tcache_idx.md` to know how to calculate this size.
-- The `PREV_INUSE` flag of `FAKE.size` (in this situation) is not important, so `FAKE.size` can be set to either 112 or 113.
-- The `XXXX` in fastbin after *hijacking* can be control by set `FAKE.fd` to coresponding address. You can make your exploitation better by set `FAKE.fd = c` (`c` is another chunk which same size) and set `c.fd = TAIL`, then the stage of fastbin will be:
+- `FAKE.size` must be equal to size of chunk `a` (formally, equal to size of any chunk in same fastbin). Read `calc_tcache_idx.md` to know how to calculate this size.
+- `PREV_INUSE` flag of `FAKE.size` (in this situation) is not important, so `FAKE.size` can be set to either 112 or 113.
+- `XXXX` in fastbin after *hijacking* can be control by set `FAKE.fd` to the suitable address. You can make your exploitation better by set `FAKE.fd = c` (`c` is another chunk which same size) and set `c.fd = TAIL`, then the stage of fastbin will be:
     > HEAD -> a -> FAKE -> c -> TAIL (PERFECT !!!)
