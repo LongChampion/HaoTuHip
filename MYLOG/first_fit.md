@@ -49,7 +49,7 @@ chunk a contains 1000
 
 chunk b contains BBBB
 ```
-hmm, everything look ok, but why chunk a contains "1000" ???  
+hmm, everything look ok, but why chunk `a` contains "1000" ???  
 If you use `GDB` to trace into `scanf`, you will see it call `malloc(0x400)` somewhere.
-Then by *first-fit paradigm*, **LIBC** return chunk a to serve `scanf`.
-As a result, chunk a contains our input ("1000\n") and this is the reason why we have the output above.  
+Then by *first-fit paradigm*, **LIBC** return chunk `a` to serve `scanf`.
+As a result, chunk `a` contains our input ("1000\n") and this is the reason why we have the output above.  
