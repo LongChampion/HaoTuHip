@@ -1,4 +1,6 @@
 # Fastbin duplicate using `malloc_consolidate`
+> LongChampion, 13/03/2020
+
 If you have read `fastbin_dup.md` and `fastbin_dup_into_stack.md`, you known how to bypass *double free checking* of fastbin. But now, we have a new method to bypass it.  
 My code (very similar to the code in `fastbin_dup_consolidate.c`):
 ```
