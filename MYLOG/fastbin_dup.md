@@ -1,7 +1,7 @@
 # Fastbin duplicate
 > LongChampion, 12/03/2020
 
-Fastbin are FIFO (as a stack), so we can use *double free* to make malloc return an allocated chunk.  
+Fastbin are LIFO (as a stack), so we can use *double free* to make malloc return an allocated chunk.  
 Our tictac is (`SIZE` must fall into fastbin size):
 ```
 a = malloc(SIZE)
