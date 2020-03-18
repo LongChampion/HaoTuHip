@@ -78,5 +78,10 @@ This attack is very similar to the last one except the followings:
 - After `free(c)`, chunk `b` is topchunk, so any malloc with size larger than size of last_remeaning_chunk will return `b`. (last_remeaning_chunk is the chunk remain in unsorted_bin when we call allocate `b2`)
 
 ## NOTE
-- **DON'T MAKE YOUR LIFE OBSTRUCT BY YOURSELF**: In simple version, we set `f_chunk->size = 0x200 | PREV_INUSE`, but in reality version, we set `f_chunk->pre_size = 0x200`.
+- **DON'T MAKE YOUR LIFE OBSTRUCT BY YOURSELF**:  
+    In simple version, we set
+    > `f_chunk->size = 0x200 | PREV_INUSE`
+
+    but in reality version, we set
+    > `f_chunk->pre_size = 0x200`.
 - This attack doesn't work against tcache_bin and fastbin because their mechanism are different from smallbin mechanism.
