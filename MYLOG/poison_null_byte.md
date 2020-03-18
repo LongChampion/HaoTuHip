@@ -8,7 +8,7 @@ In this simple sersion, we can overwrite next chunk header with any content beca
 
 int main()
 #include <stdlib.h>
-#define PREV_INUSE 0x1
+#define PREV_INUSE 0x01
 
 struct Chunk
 {
