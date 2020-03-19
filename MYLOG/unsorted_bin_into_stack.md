@@ -35,4 +35,5 @@ First, we allocate two chunks and free the first chunk to push it into unsorted_
     - Size of fake chunk is differ from size of size of `victim` chunk.
     - Size of fake chunk fall into fastbin range or smallbin range (can't be largebin range)
 - Request size of last `malloc` call must be **calcutaled** to make `malloc` return a fake chunk (read `calc_tcache_idx.md` if you don't know how to calculate this value)
+- 8 bytes at address `Fake.bk + 0x10` will be overwrite, so make sure that you set `Fake.bk` to somewhere suitable (Don't try to overwrite the canary please)
 - As we expect, `STACK` point to `Fake.fd`, not `Fake`.
