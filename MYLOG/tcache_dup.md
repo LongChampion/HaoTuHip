@@ -18,3 +18,4 @@ Unlike fastbin, early version of tcache is lack of many security checks, include
 
 ## Note
 Because the attack is very simple, it have been patched and no longer work against newer version of glibc.
+You should read `calc_tcache_idx.md` for more information about tcache_bin.
