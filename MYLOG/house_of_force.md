@@ -8,7 +8,7 @@ When your program call first *malloc function*, some kernel function (such as `b
 For example, if you call `malloc(0x100)` and the program heap segment is [0x603000 - 0x624000], then the memory layout will be:
 ```
     + - - - - - - - - - + - - - - - - - - - - - - - - - - - - - - - - - - - - +
-    |    your chunk     |                      top chunk                      |
+    |    your chunk     |                      top_chunk                      |
     |    size: 0x110    |                    size: 0x20ef0                    |
     + - - - - - - - - - + - - - - - - - - - - - - - - - - - - - - - - - - - - +
     ^                   ^                                                     ^
@@ -16,12 +16,12 @@ For example, if you call `malloc(0x100)` and the program heap segment is [0x6030
 0x603000            0x603110                                              0x624000
 ```
 This is very easy to understand, isn't it? Please remember that although your request size is 0x100, the size of returned chunk is actually 0x110 because of padding and chunk header.  
-The top_chunk mechanism is very simple: when you allocate a new (small enoungh) chunk, top chunk is split into two chunks, ones is returned to you and the remainning becomes the new top_chunk.
+The top_chunk mechanism is very simple: when you allocate a new (small enoungh) chunk, top_chunk is split into two chunks, ones is returned to you and the remainning becomes the new top_chunk.
 ```
     + - - - - - - + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
-    | your chunk  |                         top chunk                         |
+    | your chunk  |                         top_chunk                         |
     + - - - - - - + - - - - - + - - - - - - - - - - - - - - - - - - - - - - - +
-    | your chunk  | new chunk |                 new top chunk                 |
+    | your chunk  | new chunk |                 new top_chunk                 |
     + - - - - - - + - - - - - + - - - - - - - - - - - - - - - - - - - - - - - +
 
 ```
@@ -50,10 +50,10 @@ int main()
     void *REWARD = malloc(0x100 - 8);
 }
 ```
-First, we need call `malloc` once to create top_chunk. Then, we overwrite top_chunk's size to a very big value (I use -1). Next, we calculate `padding_size`: the distance between top_chunk and our target chunk. Finally, we call `malloc(padding_size)` to move our top_chunk to target chunk and call `malloc` again to complete the attack.
+First, we need call `malloc` once to create top_chunk. Then, we overwrite top_chunk's size to a very big value (I use -1). Next, we calculate `padding_size`: the distance between top_chunk and our target chunk. Finally, we call `malloc(padding_size)` to move our top_chunk to target chunk and call `malloc` one more time to complete the attack.
 
 ### Note
 - "-1 is a very big value?". If you know how computer store integer in memory and chunk size is always consider as unsigned, you will recognize that is really TRUE.
 - Our target can be any memory address, but be careful if your target is on the stack or in the segment that don't have write permission. Try to attack on those can crash your program because `malloc` will modify some pointer of top_chunk when moving it and smash your stack frame or violate segment's permission.
-- The target chunk is start at offset 0x10 before target address (this is the reason why we need operand `-0x10` when calculate `padding_size`)
+- The target chunk is begin at offset 0x10 before target address (this is the reason why we need operand `-0x10` when calculate `padding_size`)
 - In some case, the attack can't be perform because `padding_size` is not a valid chunk size (does not divide by 0x10 in x64 system or 0x8 in x86 system)

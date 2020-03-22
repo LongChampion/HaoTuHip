@@ -57,6 +57,6 @@ This is visualization:
 ```
 
 # Note
-- This attack still work with glibc 2.31 (I have tested this), but doesn't work against fastbin and tcache_bin.
+- This attack still work with **GLIBC** 2.31 (I have tested this), but doesn't work against fastbin and tcache_bin.
 - Chunk `5` is important: without it we can't free chunk `4`.
 - The `PREV_INUSE` flag in chunk `2` fake size is important, too.

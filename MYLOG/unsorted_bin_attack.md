@@ -1,7 +1,7 @@
 # Unsorted_bin attack
 > LongChampion, 19/03/2020
 
-Initially, I don't think this is an attack, this is only the trick to overwrite one address in memory with a large value. But after a bit research, I see that the value used to overwrite is very interesting: this is a address of `main_arena + 88`. Why this address is interesting? If we overwrite this value to somewhere then read it, we can leak glibc base address.
+Initially, I don't think this is an attack, this is only the trick to overwrite one address in memory with a large value. But after a bit research, I see that the value used to overwrite is very interesting: this is a address of `main_arena + 88`. Why this address is interesting? If we overwrite this value to somewhere then read it, we can leak **GLIBC** base address.
 ```
 #include <stdlib.h>
 
@@ -31,6 +31,6 @@ Look at my `unsorted_bin_into_stack.md`:
 This is how this trick work, set `header->bk` to offset 0x10 before variable `Value`, then call `malloc` with exact request size, `Value` will be overwrite to `main_arena+88`. End of trick!
 
 ## Note
-- At this time of writing, this trick is no longer work with latest version of glibc (my glibc version is 2.31)
-- Another way to use this trick is to overwrite the `global_max_fast` in glibc for further fastbin attack.
+- At this time of writing, this trick is no longer work with latest version of **GLIBC** (my **GLIBC** version is 2.31)
+- Another way to use this trick is to overwrite the `global_max_fast` in **GLIBC** for further fastbin attack.
 - `Value` is define as `long long`, so `&Value - 2` will return the address at offset 0x10 before `Value`, don't be confuse with `&Value - 0x10`.

@@ -1,4 +1,4 @@
-# Unsafe `unlink`
+# Unsafe unlink
 > LongChampion, 13/03/2020
 
 The source code in this repository and an explantation at [Heap Exploitation](https://heap-exploitation.dhavalkapil.com/attacks/unlink_exploit.html) have descript all about this attack. So I will not try to make the description better here. Instead, I will write down some note about it:
@@ -24,9 +24,9 @@ int main()
     void *first = malloc(SIZE);
     void *second = malloc(SIZE);
 
-    struct Chunk *FAKE = (struct Chunk *) first;
-    FAKE->fd = (struct Chunk *) (&first - 3);
-    FAKE->bk = (struct Chunk *) (&first - 2);
+    struct Chunk *Fake = (struct Chunk *) first;
+    Fake->fd = (struct Chunk *) (&first - 3);
+    Fake->bk = (struct Chunk *) (&first - 2);
 
     struct Chunk *secondHeader = (struct Chunk *) (second - 2 * 8);
     secondHeader->pre_size = SIZE;

@@ -32,7 +32,7 @@ int main()
 }
 ```
 There are some note:
-- Chunk `Barier` is used to prevent `Victim` become the top chunk (which we can't free)
+- Chunk `Barier` is used to prevent `Victim` from becoming the top_chunk (which we can't free)
 - After be freed, `Victim` is located in unsorted_bin, so we call `malloc` with request size larger than size of `Victim` to push `Victim` into smallbin.
 - **All modify at `Victim` must happen after we pushed it into smallbin.**
 - Chunk `Fake` and chunk `NextFake` can be located anywhere, it doens't need to be adjacent or have real size same as `Victim`, but their address should be aligned as well.

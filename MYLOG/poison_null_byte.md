@@ -32,7 +32,7 @@ int main()
     b = malloc(0x200 - 8);
 }
 ```
-First, we overflow chunk `a` to set size of chunk `b` to 0x200 | 0x1. We must set PREV_INUSE flag or `free` will merge chunk `b` with chunk `a` when chunk `b` is freed. Then, we create a fake chunk at offset 0x200 behind chunk `b`. This size fake chunk must equal to fake size of chunk `b` (it's is 0x200 in the code above). Again, the PREV_INUSE flag is also necessary: you can free a chunk if is not in use. The chunk `c` very inportant: it is both the victim chunk to be overlapping and the "pivot" chunk to prevent chunk `b` become the top chunk, which we can not free.  
+First, we overflow chunk `a` to set size of chunk `b` to 0x200 | 0x1. We must set PREV_INUSE flag or `free` will merge chunk `b` with chunk `a` when chunk `b` is freed. Then, we create a fake chunk at offset 0x200 behind chunk `b`. This size fake chunk must equal to fake size of chunk `b` (it's is 0x200 in the code above). Again, the PREV_INUSE flag is also necessary: you can free a chunk if is not in use. The chunk `c` very inportant: it is both the victim chunk to be overlapping and the "pivot" chunk to prevent chunk `b` from becoming the top_chunk, which we can not free.  
 Finally, free chunk `b`, it will be pushed to smallbin of size 0x200. When we call `malloc(0x200 - 8)`, we recieve chunk `b` again but with BIGGER SIZE and we are able to overwrite to chuck `c`.
 
 # Reality version: only one nullbyte overflow
@@ -74,8 +74,8 @@ int main()
 This attack is very similar to the last one except the followings:
 - We modify chunk `b` AFTER it have been freed.
 - The nullbyte DECREASE size of chunk `b` (0x00 is the smallest byte lol)
-- The size of chunk `b1` must strictly LERGER than max size of fastbin
-- After `free(c)`, chunk `b` is topchunk, so any malloc with size larger than size of last_remeaning_chunk will return `b`. (last_remeaning_chunk is the chunk remain in unsorted_bin when we call allocate `b2`)
+- The size of chunk `b1` must strictly LARGER than max size of fastbin
+- After `free(c)`, chunk `b` is top_chunk, so any malloc with size larger than size of last_remeaning_chunk will return `b`. (last_remeaning_chunk is the chunk remain in unsorted_bin when we call allocate `b2`)
 
 ## NOTE
 - **DON'T MAKE YOUR LIFE OBSTRUCT BY YOURSELF**:  

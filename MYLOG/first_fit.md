@@ -1,8 +1,8 @@
 # First-fit paradigm
 > LongChampion, 12/03/2020
 
-**LIBC** use *first-fit algorithm* to select free chunk to return.  
-It will iterate each free chunk (in some pre-defined rules) and the first chunk satified all condition is returned to user.  
+**GLIBC** use *first-fit algorithm* to select free chunk to return.  
+It will iterate each free chunk (in some pre-defined rules) and the first chunk satisfied all condition is returned to user.  
 I have made an amazing example:
 ```
 #include <stdio.h>
@@ -50,4 +50,4 @@ chunk a contains 1000
 chunk b contains BBBB
 ```
 hmm, everything look ok, but why chunk `a` contains "1000"???  
-If you use `GDB` to trace into `scanf`, you will see it call `malloc(0x400)` somewhere. Then by *first-fit paradigm*, **LIBC** return chunk `a` to serve `scanf`. As a result, chunk `a` contains our input ("1000\n") and this is the reason why we have the output above.
+If you use `GDB` to trace into `scanf`, you will see it call `malloc(0x400)` somewhere. Then by *first-fit paradigm*, **GLIBC** return chunk `a` to serve `scanf`. As a result, chunk `a` contains our input ("1000\n") and this is the reason why we have the output above.
