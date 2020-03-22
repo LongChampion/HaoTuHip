@@ -30,7 +30,7 @@ int main()
 First, we allocate two chunks and free the first chunk to push it into unsorted_bin. Then we set the `bk` pointer of `victim` point to our fake chunk. After that, we set the size of the fake chunk (it must differ from size of `victim` chunk) and set `Fake.bk` point to somewhere. Finally, call `malloc` with EXACT resquest size to get the fake chunk.
 
 ## Note
-- The `pivot` chunk is used to prevent `free` consolidate `victim` with top_chunk.
+- The `pivot` chunk is used to prevent `free` from consolidating `victim` with top_chunk.
 - You can change size of `victim` chunk and size of fake chunk to any value. But the following condition must be satify:
     - Size of fake chunk is differ from size of size of `victim` chunk.
     - Size of fake chunk fall into fastbin range or smallbin range (can't be largebin range)

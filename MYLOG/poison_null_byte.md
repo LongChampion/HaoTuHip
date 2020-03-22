@@ -2,7 +2,7 @@
 > LongChampion, 16/03/2020
 
 # Simple version: arbitrary overwrite
-In this simple sersion, we can overwrite next chunk header with any content because of an overflow, let see what will happen:
+In this simple version, we can overwrite next chunk header with any content because of an overflow, let see what will happen:
 ```
 #include <stdlib.h>
 

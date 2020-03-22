@@ -33,7 +33,7 @@ int main()
 }
 ```
 ### Note:
-- **THE MOST IMPORTANT**: `Fake` (and all other chunks) must be aligned by `MALLOC_ALIGNMENT` (usually 16 bytes in x64 system, 8 bytes in x32 system). Your life may be destroy if you forget this. To make sure that `Fake` is aligned, add `__attribute__` to it:
+- **THE MOST IMPORTANT**: `Fake` (and all other chunks) must be aligned by `MALLOC_ALIGNMENT` (usually 16 bytes in x64 system, 8 bytes in x32 system). Your life may be destroyed if you forget this. To make sure that `Fake` is aligned, add `__attribute__` to it:
     > `long long Fake[6] __attribute__((aligned(16))); // change 16 to 8 when you compile in x86 system`
 
 - The `PREV_INUSE` flag is ignored, but `IS_MMAPPED` flag and `NON_MAIN_ARENA` flag can cause problem!
