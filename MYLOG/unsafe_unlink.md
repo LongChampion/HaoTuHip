@@ -6,7 +6,7 @@ The source code in this repository and an explantation at [Heap Exploitation](ht
 - This is the fact that, field `pre_size` of the second chunk is belong to the first chunk, you can overwrite it freely.
 - The `size` field of the second chunk is harder to control: it can't be directly access from both first chunk and second chunk. But we only want to set the last bit of `size` to zero, it can be easily done by an `off by one` error. However, in this case, the size of both chunk must be multiples of 0x100.
 Look at my code:
-```
+```c
 #include <stdlib.h>
 #include <unistd.h>
 

@@ -4,7 +4,7 @@
 **GLIBC** use *first-fit algorithm* to select free chunk to return.  
 It will iterate each free chunk (in some pre-defined rules) and the first chunk satisfied all condition is returned to user.  
 I have made an amazing example:
-```
+```c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

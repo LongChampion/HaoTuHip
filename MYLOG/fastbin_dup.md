@@ -3,7 +3,7 @@
 
 Fastbin are LIFO (as a stack), so we can use *double free* to make malloc return an allocated chunk.  
 Our strategy is (`SIZE` must fall into fastbin size):
-```
+```c
 a = malloc(SIZE)
 b = malloc(SIZE)
 

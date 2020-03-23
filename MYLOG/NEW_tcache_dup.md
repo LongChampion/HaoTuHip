@@ -3,7 +3,7 @@
 
 I think I have discovered a new technique to bypass tcache's double free checking.  
 Look at this [this](https://github.com/bminor/glibc/blob/master/malloc/malloc.c),
-```
+```c
 [...]
 typedef struct tcache_entry
 {
@@ -15,7 +15,7 @@ typedef struct tcache_entry
 ```
 you can see that these is a field named `key` and this field is used to "detect double frees" according to the source code. Seriously! So I try to modify this field when the corresponding chunk is freed, and the result is very awesome.
 
-```
+```c
 #include <stdlib.h>
 
 int main()

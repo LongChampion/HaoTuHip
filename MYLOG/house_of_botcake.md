@@ -2,7 +2,7 @@
 > LongChampion, 23/03/2020
 
 This attack can bypass tcache double free checking by taking advantages of the limit that each tcache_bin can only contain 7 chunks at maximum.
-```
+```c
 #include <stdlib.h>
 
 char SECRET[] = "This is a top secret!";

@@ -2,7 +2,7 @@
 > LongChampion, 21/03/2020
 
 Lets demostrate the House of Spirit attack with tcache.
-```
+```c
 #include <stdlib.h>
 
 struct Chunk

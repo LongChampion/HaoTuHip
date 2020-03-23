@@ -2,7 +2,7 @@
 > LongChampion, 18/03/2020
 
 This attack ideal is similar to *fastbin_dup_into_stack*, but it is used for smallbin.
-```
+```c
 #include <stdlib.h>
 
 struct Chunk

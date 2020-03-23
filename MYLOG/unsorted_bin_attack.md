@@ -2,7 +2,7 @@
 > LongChampion, 19/03/2020
 
 Initially, I don't think this is an attack, this is only the trick to overwrite one address in memory with a large value. But after a bit research, I see that the value used to overwrite is very interesting: this is a address of `main_arena + 88`. Why this address is interesting? If we overwrite this value to somewhere then read it, we can leak **GLIBC** base address.
-```
+```c
 #include <stdlib.h>
 
 struct Chunk

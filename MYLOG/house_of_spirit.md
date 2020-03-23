@@ -3,7 +3,7 @@
 
 ## with tcache (**GLIBC** >= 2.26)
 This attack is quite simple, look at the code:
-```
+```c
 #include <stdlib.h>
 
 int main()
@@ -18,7 +18,7 @@ int main()
 ```
 ## with fastbin (**GLIBC** <= 2.25)
 To *hijack* fastbin, you need to create 2 chunks to bypass security check: `size` of chunk to be free must be equal to `size` of next chunk in memory.  
-```
+```c
 #include <stdlib.h>
 
 int main()

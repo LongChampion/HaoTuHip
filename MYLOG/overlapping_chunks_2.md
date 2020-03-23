@@ -2,7 +2,7 @@
 > LongChampion, 18/03/2020
 
 Yes, another overlapping attack. This attack is a bit harder than version 1, but is is easier than *poison null byte*.
-```
+```c
 #include <stdlib.h>
 #define PREV_INUSE 0x01
 

@@ -4,7 +4,7 @@
 > Please read `fastbin_dup.md` to know how to duplicate the chunk in fastbin linked list.
 
 My code:
-```
+```c
 #include <stdlib.h>
 
 struct Chunk

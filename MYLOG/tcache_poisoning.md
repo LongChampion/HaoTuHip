@@ -2,7 +2,7 @@
 > LongChampion, 21/03/2020
 
 I think tcache is an easier version of fastbin.
-```
+```c
 #include <stdlib.h>
 
 int main()

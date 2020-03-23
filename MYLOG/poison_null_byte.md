@@ -3,7 +3,7 @@
 
 # Simple version: arbitrary overwrite
 In this simple version, we can overwrite next chunk header with any content because of an overflow, let see what will happen:
-```
+```c
 #include <stdlib.h>
 
 int main()
@@ -37,7 +37,7 @@ Finally, free chunk `b`, it will be pushed to smallbin of size 0x200. When we ca
 
 # Reality version: only one nullbyte overflow
 This error is common but is harder to exploit.
-```
+```c
 #include <stdlib.h>
 #include <malloc.h>
 

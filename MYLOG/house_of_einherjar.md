@@ -2,7 +2,7 @@
 > LongChampion, 21/03/2020
 
 Let see how to *hijack* `malloc` return a fake chunk.
-```
+```c
 #include <stdlib.h>
 
 struct CHUNK

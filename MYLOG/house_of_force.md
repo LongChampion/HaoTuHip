@@ -27,7 +27,7 @@ The top_chunk mechanism is very simple: when you allocate a new (small enoungh) 
 ```
 
 ## The attack
-```
+```c
 #include <stdlib.h>
 
 struct Chunk

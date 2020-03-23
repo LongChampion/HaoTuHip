@@ -2,7 +2,7 @@
 > LongChampion, 19/03/2020
 
 In this attack, we modify the `bk` pointer of a chunk in unsorted_bin to make `malloc` return a fake chunk.
-```
+```c
 #include <stdlib.h>
 
 struct Chunk

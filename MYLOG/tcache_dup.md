@@ -2,7 +2,7 @@
 > LongChampion, 21/03/2020
 
 This attack work as `fastbin_dup`:
-```
+```c
 #include <stdlib.h>
 
 int main()
